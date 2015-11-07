@@ -1,0 +1,27 @@
+{
+  "name": "slackingRPG",
+  "version": "1",
+  "description": "A text-based Multiplayer RPG for Slack",
+  "main": "router.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "ws": "*",
+    "request": "*",
+    "jethro": "*",
+    "eventemitter3": "*",
+    "slackbotapi" : "*"
+  },
+  "author": "itty <ittytheitstar@gmail.com>",
+  "contributors": [
+  ],
+  "license": "LGPL-3.0",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "directories": {
+  }
+
+}

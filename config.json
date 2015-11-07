@@ -1,0 +1,29 @@
+{
+
+  "token":"xoxb-11606013268-TRhbzjumlNcUNCrMPNLkhnJQ",
+  "defaultRespondChannel":"#slackingRPG",
+  "logging":true,
+  "autoReconnect":false,
+
+  "commands":{
+      "join":{
+          "enabled":true,
+          "respond":true,
+          "commandfile":"join.js",
+          "classname":"Join",
+          "messegingname":"New Recuit Service"
+      },
+
+      "new":{
+          "enabled":true,
+          "respond":true,
+          "commandfile":"new.js",
+          "classname":"PrettyBot",
+          "messegingname":"New Recuit Service"
+      }
+
+  }
+
+
+
+}
