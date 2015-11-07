@@ -4,7 +4,7 @@
 var weaponLoader = require('./weapon');
 var dbconnectorLoader = require('../utility/dbconnector');
 
-player = function(){
+exports.player = function(){
     this.name = "";
     this.userName = "";
     this.userId = 0;
@@ -108,7 +108,8 @@ player = function(){
             this.health,
             this.doge,
             this.luck,
-            this.previoushealth
+            this.previoushealth,
+	    this.userName
         ]
             );
             this.set(returnedUser[0]);
