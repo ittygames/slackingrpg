@@ -20,34 +20,41 @@ slack.on('message', function (data) {
     if (data.text.charAt(0) === '%') {
 
         //set up variables
-        $commandName = "";
-        $indexKeeper = "";
-        $commands = [];
-        $inputstring = "";
-        $command2 = "";
+        var $commandName;
+        var $indexKeeper;
+        var $commands = [];
+        var $inputstring = "";
+        var $command2 = "";
+        var $inputData = "";
 
        //standard formats are:
        // %<commandname> <action 1> <optional action2, determined by leading {> {data}
 
         // Split the command and into its parts
         $indexKeeper = 1;
-        $commandName = data.text.substring($indexKeeper,  data.text.indexOf(" ", $indexKeeper));
+        if(data.text.indexOf(" ", $indexKeeper) == -1){
+            $commandName = data.text.substring($indexKeeper, data.text.length);
+        }else {
+            $commandName = data.text.substring($indexKeeper, data.text.indexOf(" ", $indexKeeper));
+        }
 
         $indexKeeper =  data.text.indexOf(" ", $indexKeeper) + 1;
 
 
         //there isn't a 'next' { attempt to set the command array from the remainer of the message
         if (!(data.text.indexOf("{",$indexKeeper))) {
-            $commands.add( data.text.substring($indexKeeper,  data.text.length).split(" "));
+            $commands =  data.text.substring($indexKeeper,  data.text.length).split(" ");
             $indexKeeper =  data.text.indexOf(" ", $indexKeeper) + 1;
+            $inputString = (data.text.substring($indexKeeper,  data.text.length)).trim();
+            $inputData = eval('(' + '[' + $inputString + ']' + ')');
         }else{
-            $commands.add(data.text.substring($indexKeeper,  data.text.indexOf("{", $indexKeeper) - 1).split(" "));
+            $commands = data.text.substring($indexKeeper,  data.text.indexOf("{", $indexKeeper) - 1).split(" ");
             $indexKeeper =  data.text.indexOf(" ", $indexKeeper) + 1;
         }
 
 
-        $inputString = (data.text.substring($indexKeeper,  data.text.length)).trim();
-        $inputData = eval('(' + '[' + $inputString + ']' + ')');
+
+
 
         console.log($commandName);
         console.log($indexKeeper);
@@ -56,10 +63,10 @@ slack.on('message', function (data) {
         console.log($command2);
 
 
-        if(getCommandConfigByName($CommandName)) {
+        if(getCommandConfigByName($commandName)) {
             $CommandObject = require("./commands/" + (getCommandConfigByName($commandName)).commandfile);
-            if ((getcommandommandConfigByName($commandName)).enabled) {
-                $CommandObject.doAction(slack,data,getCommandConfigByName($commandName),$command1, $command2,$inputData)
+            if ((getCommandConfigByName($commandName)).enabled) {
+                $CommandObject.doAction(slack,data,getCommandConfigByName($commandName),$commands, $inputData)
             }
         }
 
@@ -69,7 +76,7 @@ slack.on('message', function (data) {
 function  getCommandConfigByName($inName){
     for($Command in config.commands){
         if($Command == $inName) {
-            return config.$commad[$commad];
+            return config.commands[$inName];
         }
     }
     return null;

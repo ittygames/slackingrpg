@@ -7,27 +7,37 @@ DBConnector = function(){
 
     this.connectionConfig = {
         host: "itty.co.nz",
-        user: "ITTY_slackingRPG",
-        password: "Password",
-        database: "ITTY_slackingRPG"
+        user: "itty_slackingRPG",
+        password: "realPassword",
+        database: "itty_slackingRPG"
     };
 
-    this.connection = null;
+     var connection = null;
 
     this.connect = function(){
         this.connection = mysql.createConnection(this.connectionConfig);
         return this.connection;
     };
 
+    
     this.doQuery = function(_query, _args){
-        return this.connection.query(_query,_args,function(err,rows){
+        this.connect();
+        var toReturn =  this.connection.query(_query,_args,function(err,rows){
+            if(err){
+            	console.error('error qrerying: ' + err.stack);
+            	throw err;
+            }
             return rows;
         });
+        this.connection.end(function(err) {
+        	if(err){ 
+        		console.log('error closing: ' + err);
+        	}
+        });;
+        return toReturn;
     };
 
-    this.close = function(){
-        this.connection.close()
-    }
+   return this;
 };
 
 

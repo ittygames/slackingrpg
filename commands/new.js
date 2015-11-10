@@ -1,7 +1,7 @@
 /**
  * Created by Carl Wright on 7/11/2015.
  */
-var playerLoader = require('./player.js');
+var playerLoader = require('../classes/entities/player');
 exports.doAction = function($slack, $slackData, $command, $commands, $commandData) {
 
     switch ($commands[0]){

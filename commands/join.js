@@ -1,20 +1,20 @@
 /**
  * Created by Carl Wright on 7/11/2015.
  */
-var weaponLoader = require('./player.js');
+var playerLoader = require('../classes/entities/player');
 
 
 
 exports.doAction = function($slack, $slackData, $command, $commands, $commandData)
 {
-    var callingPlayer = new weaponLoader.player();
-    callingPlayer.userName = $slackData['userName']
+    var callingPlayer = new playerLoader.player();
+    callingPlayer.userName = $slackData['user']
     try{
         callingPlayer.readPlayer();
         if(callingPlayer.id > 0){
             //Error player already exists
         }else{
-            callingPlayer.userName = $slackData['userName']
+            callingPlayer.userName = $slackData['user']
             callingPlayer.createPlayer();
             if (callingPlayer.id > 0){
                 // welcome player ask them to call set name <playername to continue>
@@ -25,7 +25,7 @@ exports.doAction = function($slack, $slackData, $command, $commands, $commandDat
     }
 
     catch(exception){
-        callingPlayer.userName = $slackData['userName']
+        callingPlayer.userName = $slackData['user']
         callingPlayer.createPlayer();
         if (callingPlayer.id > 0){
             // welcome player ask them to call set name <playername to continue>

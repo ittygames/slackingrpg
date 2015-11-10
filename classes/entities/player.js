@@ -1,11 +1,15 @@
 /**
  * Created by Carl Wright on 7/11/2015.
- */
-var weaponLoader = require('./weapon');
-var dbconnectorLoader = require('../utility/dbconnector');
 
-exports.player = function(){
-    this.name = "";
+ *var weaponLoader = require('./weapon');
+  var dbconnectorLoader = require('../utility/dbconnector');
+ *
+ */
+
+class player {
+    
+	constructor() {
+	this.name = "";
     this.userName = "";
     this.userId = 0;
     this.adventurerName = "";
@@ -21,31 +25,26 @@ exports.player = function(){
     this.luck = 0;
     this.previoushealth = 0;
 
-
+	}
     //CRUD Statments no delete for player, you're trapped forever.
 
-    this.createPlayer = function(){
-        try{
+    createPlayer(){
+        try {
             var connector = new DBConnector();
-            connector.connect()
-            var query = "INSERT INTO slackingRPG.player VALUES (" +
-                "userName=?)";
-
-            connector.doQuery(query, this.userName);
-            this.readPlayer
-
-        }finally {
-            connector.close()
+            var query = mysql.escape("INSERT INTO `itty_slackingRPG`.`player`(`userName`) VALUES ('"+this.userName+"')");
+            connector.doQuery(query);
+            this.readPlayer();
+        }catch(ex){
+            console.log(ex.message);
         }
-    };
+    }
 
-    this.readPlayer = function(){
+    readPlayer(){
         try{
             var connector = new DBConnector();
-            connector.connect()
             var query = "SELECT name," +
                 "userName," +
-                "userId," +
+                "Id," +
                 "adventurerName," +
                 "level," +
                 "xp," +
@@ -57,24 +56,25 @@ exports.player = function(){
                 "doge," +
                 "luck," +
                 "previoushealth" +
-                " From slackingRPG.player where userName = ?";
+                " From itty_slackingRPG.player where userName = @userName";
 
                 //returened user is the sql returned rows, use the ONLY returned record , index 0.
-                returnedUser = connector.doQuery(query, this.userName);
+                returnedUser = connector.doQuery(query, {"userName" : this.userName});
                 this.set(returnedUser[0]);
-        }finally {
-            connector.close()
+      
+        }catch(ex){
+        	console.log(ex.message);
         }
-    };
+    }
 
-    this.updatePlayer = function(){
+    updatePlayer(){
         try{
             var connector = new DBConnector();
             connector.connect()
             var query = "Update slackingRPG.player Set (" +
                 "name," +
                 "userName," +
-                "userId," +
+                "Id," +
                 "adventurerName," +
                 "level," +
                 "xp," +
@@ -113,29 +113,30 @@ exports.player = function(){
         ]
             );
             this.set(returnedUser[0]);
-        }finally {
-            connector.close();
+        }catch(ex){
+        	console.log(ex.message);
         }
-    };
-
-    this.set = function(_data){
-
-        this.name = _data.name;
-        this.userName = _data.userName;
-        this.userId = _data.userId;
-        this.adventurerName = _data.adventurerName;
-        this.level = _data.level;
-        this.xp = _data.xp;
-        this.speed = _data.speed;
-        this.strength = _data.strength;
-        this.class = _data.class;
-        this.weapon = new Weapon().set(_data.weapon);
-        this.gold = _data.gold;
-        this.health = _data.health;
-        this.doge = _data.doge;
-        this.luck = _data.luck;
-        this.previoushealth = _data.previoushealth;
     }
+    
+    
+    set(setData){
 
+        this.name = setData.name;
+        this.userName = setData.userName;
+        this.userId = setData.userId;
+        this.adventurerName = setData.adventurerName;
+        this.level = setData.level;
+        this.xp = setData.xp;
+        this.speed = setData.speed;
+        this.strength = setData.strength;
+        this.class = setData.class;
+        this.weapon = new Weapon().set(setData.weapon);
+        this.gold = setData.gold;
+        this.health = setData.health;
+        this.doge = setData.doge;
+        this.luck = setData.luck;
+        this.previoushealth = setData.previoushealth;
+    }
+    
+}
 
-};
